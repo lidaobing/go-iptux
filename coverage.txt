@@ -1,0 +1,18 @@
+mode: atomic
+github.com/lidaobing/go-iptux/libiptux/share_file.go:14.50,46.2 16 1
+github.com/lidaobing/go-iptux/libiptux/share_file.go:48.50,66.2 14 1
+github.com/lidaobing/go-iptux/libiptux/share_file.go:67.55,98.2 23 1
+github.com/lidaobing/go-iptux/libiptux/i18n.go:7.48,9.2 1 15
+github.com/lidaobing/go-iptux/libiptux/iptux_config.go:16.65,18.24 2 1
+github.com/lidaobing/go-iptux/libiptux/iptux_config.go:22.2,22.16 1 0
+github.com/lidaobing/go-iptux/libiptux/iptux_config.go:26.2,32.16 3 0
+github.com/lidaobing/go-iptux/libiptux/iptux_config.go:36.2,37.16 2 0
+github.com/lidaobing/go-iptux/libiptux/iptux_config.go:41.2,42.16 2 0
+github.com/lidaobing/go-iptux/libiptux/iptux_config.go:46.2,47.8 2 0
+github.com/lidaobing/go-iptux/libiptux/iptux_config.go:18.24,20.3 1 1
+github.com/lidaobing/go-iptux/libiptux/iptux_config.go:22.16,24.3 1 0
+github.com/lidaobing/go-iptux/libiptux/iptux_config.go:32.16,34.3 1 0
+github.com/lidaobing/go-iptux/libiptux/iptux_config.go:37.16,39.3 1 0
+github.com/lidaobing/go-iptux/libiptux/iptux_config.go:42.16,44.3 1 0
+github.com/lidaobing/go-iptux/libiptux/main_window.go:9.34,32.2 16 1
+github.com/lidaobing/go-iptux/libiptux/main_window.go:34.46,37.2 2 0
