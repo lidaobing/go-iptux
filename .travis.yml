@@ -8,7 +8,7 @@ go:
   - tip
 
 before_install:
-  - go get -t -v ./...
+  - dep ensure
 
 script: go test -v -race -coverprofile=coverage.txt -covermode=atomic .
 
