@@ -10,7 +10,7 @@ func main() {
 	gotext.SetDomain("go-iptux")
 
 	gtk.Init(nil)
-	shareFile := libiptux.NewShareFile(nil)
+	shareFile := libiptux.NewMainWindow()
 	shareFile.ShowAll()
 	gtk.Main()
 }

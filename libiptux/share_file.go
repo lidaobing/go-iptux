@@ -68,7 +68,7 @@ func (self *ShareFile) createFileTree() *gtk.TreeView {
 	res := gtk.NewTreeView()
 	res.SetModel(self.model)
 	res.SetHeadersVisible(true)
-	// TODO: gtk_tree_view_set_rubber_banding
+	res.SetRubberBanding(true)
 
 	res.GetSelection().SetMode(gtk.SELECTION_MULTIPLE)
 
