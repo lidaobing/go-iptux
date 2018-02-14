@@ -152,6 +152,6 @@ func (self *ShareFile) addRegular() {
 	}
 
 	for i := uint(0); i < list.Length(); i++ {
-		fmt.Fprintln(os.Stdout,"%s", glib.GPtrToString(list.Nth(i).Data()))
+		fmt.Fprintln(os.Stdout, glib.GPtrToString(list.Nth(i).Data()))
 	}
 }
