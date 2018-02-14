@@ -18,7 +18,7 @@
     "gtk",
     "pango"
   ]
-  revision = "f57543780118d55e8977c4e67f32ab7858774972"
+  revision = "a7be6749f325ec9a87dedad633de0c1d071f53bf"
   source = "https://github.com/lidaobing/go-gtk.git"
 
 [[projects]]
@@ -52,8 +52,8 @@
 [[projects]]
   name = "gopkg.in/leonelquinteros/gotext.v1"
   packages = ["."]
-  revision = "7d86bb66fe2566952f99de2352e4e10a100d3ea5"
-  version = "v1.2.4"
+  revision = "c583d0991b048efcdd329539853827d6b5f3846f"
+  version = "v1.3.0"
 
 [solve-meta]
   analyzer-name = "dep"

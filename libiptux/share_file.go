@@ -14,16 +14,18 @@ type ShareFile struct {
 func NewShareFile(window *gtk.Window) *ShareFile {
 	model := gtk.NewListStore(glib.G_TYPE_STRING, glib.G_TYPE_STRING, glib.G_TYPE_STRING, glib.G_TYPE_STRING, glib.G_TYPE_UINT)
 
-	//sortable := gtk.NewTreeSortable(model)
-	// TODO: gtk_tree_sortable_set_default_sort_func
-	//sortable.SetSortColumnId(gtk.TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID, gtk.SORT_ASCENDING)
 
 	res := &ShareFile{
 		*gtk.NewDialog(),
 		model,
 	}
+
+	sortable := gtk.NewTreeSortable(model)
+	sortable.SetDefaultSortFunc(res.fileTreeCompareFunc)
+	sortable.SetSortColumnId(gtk.TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID, gtk.SORT_ASCENDING)
+
 	res.SetTitle(T("Shared Files Management"))
-	//res.SetParent(window)
+	res.SetParent(window)
 	res.AddButton(T("OK"), gtk.RESPONSE_OK)
 	res.AddButton(T("Apply"), gtk.RESPONSE_APPLY)
 	res.AddButton(T("Cancel"), gtk.RESPONSE_CANCEL)
@@ -62,6 +64,7 @@ func (self *ShareFile) createAllArea() *gtk.HBox {
 	vbox.PackEnd(gtk.NewButtonWithLabel(T("Set Password")), false, false, 0)
 
 	res.PackStart(vbox, false, false, 0)
+	res.ShowAll()
 	return res
 }
 func (self *ShareFile) createFileTree() *gtk.TreeView {
@@ -95,4 +98,25 @@ func (self *ShareFile) createFileTree() *gtk.TreeView {
 	column.SetResizable(true)
 	res.AppendColumn(column)
 	return res
+}
+
+func (self *ShareFile) fileTreeCompareFunc(m *gtk.TreeModel, a *gtk.TreeIter, b *gtk.TreeIter) int {
+	var aFilePath string
+	var bFilePath string
+
+	value := glib.ValueFromNative("")
+
+	m.GetValue(a, 1, value)
+	aFilePath = value.GetString()
+
+	m.GetValue(b, 1, value)
+	bFilePath = value.GetString()
+
+	if aFilePath < bFilePath {
+		return -1
+	} else if aFilePath == bFilePath {
+		return 0
+	} else {
+		return 1
+	}
 }
