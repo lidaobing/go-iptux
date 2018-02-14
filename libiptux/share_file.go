@@ -57,7 +57,10 @@ func (self *ShareFile) createAllArea() *gtk.HBox {
 	res.Add(sw)
 
 	vbox := gtk.NewVBox(false, 0);
-	vbox.PackStart(gtk.NewButtonWithLabel(T("Add Files")), false, false, 0)
+	button := gtk.NewButtonWithLabel(T("Add Files"))
+	vbox.PackStart(button, false, false, 0)
+	button.Connect("clicked", self.addRegular)
+
 	vbox.PackStart(gtk.NewButtonWithLabel(T("Add Folders")), false, false, 0)
 	vbox.PackStart(gtk.NewButtonWithLabel(T("Delete Resources")), false, false, 0)
 	vbox.PackEnd(gtk.NewButtonWithLabel(T("Clear Password")), false, false, 0)
@@ -119,4 +122,26 @@ func (self *ShareFile) fileTreeCompareFunc(m *gtk.TreeModel, a *gtk.TreeIter, b 
 	} else {
 		return 1
 	}
+}
+
+func (self *ShareFile) addRegular() {
+	dialog := gtk.NewFileChooserDialog(
+		T("Choose the files to share"),
+		&self.Window,
+		gtk.FILE_CHOOSER_ACTION_OPEN,
+		gtk.STOCK_OPEN,
+		gtk.RESPONSE_ACCEPT,
+		gtk.STOCK_CANCEL,
+		gtk.RESPONSE_CANCEL,
+	)
+	dialog.SetDefaultResponse(gtk.RESPONSE_ACCEPT)
+	dialog.SetLocalOnly(false)
+	dialog.SetSelectMultiple(true)
+	dialog.SetCurrentFolder(glib.GetHomeDir())
+	defer dialog.Destroy()
+	switch(dialog.Run()) {
+	case gtk.RESPONSE_ACCEPT:
+		return dialog.GetFilenames()
+	}
+	dialog.Destroy()
 }

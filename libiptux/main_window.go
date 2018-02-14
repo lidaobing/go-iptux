@@ -23,8 +23,7 @@ func NewMainWindow() *MainWindow {
 	menu.SetSubmenu(submenu)
 
 	menuItem := gtk.NewImageMenuItemWithMnemonic(T("_Shared Management"))
-	image := gtk.NewImageFromIconName(gtk.STOCK_ABOUT, gtk.ICON_SIZE_MENU)
-	//image := gtk.NewImageFromIconName(gtk.STOCK_ABOUT)
+	image := gtk.NewImageFromStock(gtk.STOCK_ABOUT, gtk.ICON_SIZE_MENU)
 	menuItem.SetImage(&image.Widget)
 	submenu.Append(menuItem)
 	menuItem.Connect("activate", res.onSharedManagement)
