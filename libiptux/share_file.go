@@ -4,6 +4,8 @@ import (
 	"github.com/mattn/go-gtk/gtk"
 	"github.com/mattn/go-gtk/glib"
 	"github.com/mattn/go-gtk/gdk"
+	"fmt"
+	"os"
 )
 
 type ShareFile struct {
@@ -139,9 +141,17 @@ func (self *ShareFile) addRegular() {
 	dialog.SetSelectMultiple(true)
 	dialog.SetCurrentFolder(glib.GetHomeDir())
 	defer dialog.Destroy()
-	switch(dialog.Run()) {
+
+	var list *glib.SList
+
+	switch dialog.Run() {
 	case gtk.RESPONSE_ACCEPT:
-		return dialog.GetFilenames()
+		list = dialog.GetFilenames()
+	default:
+		return
 	}
-	dialog.Destroy()
+
+	for i := uint(0); i < list.Length(); i++ {
+		fmt.Fprintln(os.Stdout,"%s", glib.GPtrToString(list.Nth(i).Data()))
+	}
 }

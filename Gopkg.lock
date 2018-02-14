@@ -18,7 +18,7 @@
     "gtk",
     "pango"
   ]
-  revision = "0c8956d3751f3c66108f1e793f396070ec250d82"
+  revision = "fc1ffd2ab4c53ea7d70d8deba97d7341dc68bf77"
   source = "https://github.com/lidaobing/go-gtk.git"
 
 [[projects]]
