@@ -1,11 +1,12 @@
 package libiptux
 
 import (
-	"github.com/mattn/go-gtk/gtk"
-	"github.com/mattn/go-gtk/glib"
-	"github.com/mattn/go-gtk/gdk"
+	"C"
 	"fmt"
-	"os"
+	"github.com/gotk3/gotk3/gtk"
+	"github.com/gotk3/gotk3/glib"
+	"github.com/lidaobing/gtkmust"
+	"unsafe"
 )
 
 type ShareFile struct {
@@ -14,20 +15,21 @@ type ShareFile struct {
 }
 
 func NewShareFile(window *gtk.Window) *ShareFile {
-	model := gtk.NewListStore(glib.G_TYPE_STRING, glib.G_TYPE_STRING, glib.G_TYPE_STRING, glib.G_TYPE_STRING, glib.G_TYPE_UINT)
+	model := gtkmust.ListStoreNew(glib.TYPE_STRING, glib.TYPE_STRING, glib.TYPE_STRING, glib.TYPE_STRING, glib.TYPE_UINT)
 
 
 	res := &ShareFile{
-		*gtk.NewDialog(),
+		*gtkmust.DialogNew(),
 		model,
 	}
 
-	sortable := gtk.NewTreeSortable(model)
-	sortable.SetDefaultSortFunc(res.fileTreeCompareFunc)
-	sortable.SetSortColumnId(gtk.TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID, gtk.SORT_ASCENDING)
+
+	//sortable := gtk.NewTreeSortable(model)
+	//sortable.SetDefaultSortFunc(res.fileTreeCompareFunc)
+	//sortable.SetSortColumnId(gtk.TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID, gtk.SORT_ASCENDING)
 
 	res.SetTitle(T("Shared Files Management"))
-	res.SetParent(window)
+	res.SetTransientFor(window)
 	res.AddButton(T("OK"), gtk.RESPONSE_OK)
 	res.AddButton(T("Apply"), gtk.RESPONSE_APPLY)
 	res.AddButton(T("Cancel"), gtk.RESPONSE_CANCEL)
@@ -38,102 +40,82 @@ func NewShareFile(window *gtk.Window) *ShareFile {
 	res.SetBorderWidth(5);
 	res.SetSizeRequest(500, 350)
 
-	entries := []gtk.TargetEntry{
-		{"text/uri-list", 0, 0},
-	}
-	res.DragDestSet(gtk.DEST_DEFAULT_ALL, entries, gdk.ACTION_MOVE)
+	//entries := []gtk.TargetEntry{
+	//	*gtkmust.TargetEntryNew("text/uri-list", 0, 0),
+	//}
+	//res.DragDestSet(gtk.DEST_DEFAULT_ALL, entries, gdk.ACTION_MOVE)
 	// TODO: add DragDataReceived
-	res.Connect("drag-data-received", nil)
-
-	res.GetVBox().PackStart(res.createAllArea(), true, true, 0)
+	//res.Connect("drag-data-received", nil)
+	gtkmust.MustBox(res.GetContentArea()).PackStart(res.createAllArea(), true, true, 0)
 	return res
 }
 
-func (self *ShareFile) createAllArea() *gtk.HBox {
-	res := gtk.NewHBox(false, 0)
+func (self *ShareFile) createAllArea() *gtk.Box {
+	res := gtkmust.BoxNew(gtk.ORIENTATION_HORIZONTAL, 0);
+	sw := gtkmust.ScrolledWindowNew(nil, nil)
 
-	sw := gtk.NewScrolledWindow(nil, nil)
 	sw.SetPolicy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 	sw.SetShadowType(gtk.SHADOW_ETCHED_IN)
 	sw.Add(self.createFileTree())
 	res.Add(sw)
 
-	vbox := gtk.NewVBox(false, 0);
-	button := gtk.NewButtonWithLabel(T("Add Files"))
+	vbox := gtkmust.BoxNew(gtk.ORIENTATION_VERTICAL, 0)
+
+	button := gtkmust.ButtonNewWithLabel(T("Add Files"))
 	vbox.PackStart(button, false, false, 0)
 	button.Connect("clicked", self.addRegular)
 
-	vbox.PackStart(gtk.NewButtonWithLabel(T("Add Folders")), false, false, 0)
-	vbox.PackStart(gtk.NewButtonWithLabel(T("Delete Resources")), false, false, 0)
-	vbox.PackEnd(gtk.NewButtonWithLabel(T("Clear Password")), false, false, 0)
-	vbox.PackEnd(gtk.NewButtonWithLabel(T("Set Password")), false, false, 0)
+	vbox.PackStart(gtkmust.ButtonNewWithLabel(T("Add Folders")), false, false, 0)
+	vbox.PackStart(gtkmust.ButtonNewWithLabel(T("Delete Resources")), false, false, 0)
+	vbox.PackEnd(gtkmust.ButtonNewWithLabel(T("Clear Password")), false, false, 0)
+	vbox.PackEnd(gtkmust.ButtonNewWithLabel(T("Set Password")), false, false, 0)
 
 	res.PackStart(vbox, false, false, 0)
 	res.ShowAll()
 	return res
 }
 func (self *ShareFile) createFileTree() *gtk.TreeView {
-	res := gtk.NewTreeView()
+	res := gtkmust.TreeViewNew()
 	res.SetModel(self.model)
 	res.SetHeadersVisible(true)
 	res.SetRubberBanding(true)
 
-	res.GetSelection().SetMode(gtk.SELECTION_MULTIPLE)
+	gtkmust.MustTreeSelection(res.GetSelection()).SetMode(gtk.SELECTION_MULTIPLE)
 
-	column := gtk.NewTreeViewColumn()
+	column := gtkmust.TreeViewColumnNew()
 	column.SetResizable(true)
 	column.SetTitle(T("File"))
 
 	var cell gtk.ICellRenderer
-	cell = gtk.NewCellRendererPixbuf()
+	cell = gtkmust.CellRendererPixbufNew()
 	column.PackStart(cell, false)
 	column.AddAttribute(cell, "icon-name", 0)
 
-	cell = gtk.NewCellRendererText()
+	cell = gtkmust.CellRendererTextNew()
 	column.PackStart(cell, false)
 	column.AddAttribute(cell, "text", 1)
 
 	res.AppendColumn(column)
 
-	column = gtk.NewTreeViewColumnWithAttributes(T("Size"), gtk.NewCellRendererText(), "text", 2)
+	column = gtkmust.TreeViewColumnNewWithAttribute(T("Size"), gtkmust.CellRendererTextNew(), "text", 2)
 	column.SetResizable(true)
 	res.AppendColumn(column)
 
-	column = gtk.NewTreeViewColumnWithAttributes(T("Type"), gtk.NewCellRendererText(), "text", 3)
+	column = gtkmust.TreeViewColumnNewWithAttribute(T("Type"), gtkmust.CellRendererTextNew(), "text", 3)
 	column.SetResizable(true)
 	res.AppendColumn(column)
 	return res
 }
 
-func (self *ShareFile) fileTreeCompareFunc(m *gtk.TreeModel, a *gtk.TreeIter, b *gtk.TreeIter) int {
-	var aFilePath string
-	var bFilePath string
-
-	value := glib.ValueFromNative("")
-
-	m.GetValue(a, 1, value)
-	aFilePath = value.GetString()
-
-	m.GetValue(b, 1, value)
-	bFilePath = value.GetString()
-
-	if aFilePath < bFilePath {
-		return -1
-	} else if aFilePath == bFilePath {
-		return 0
-	} else {
-		return 1
-	}
-}
 
 func (self *ShareFile) addRegular() {
-	dialog := gtk.NewFileChooserDialog(
+	dialog := gtkmust.FileChooserDialogNewWith2Buttons(
 		T("Choose the files to share"),
 		&self.Window,
 		gtk.FILE_CHOOSER_ACTION_OPEN,
-		gtk.STOCK_OPEN,
+		T("Open"),
 		gtk.RESPONSE_ACCEPT,
-		gtk.STOCK_CANCEL,
+		T("Cancel"),
 		gtk.RESPONSE_CANCEL,
 	)
 	dialog.SetDefaultResponse(gtk.RESPONSE_ACCEPT)
@@ -146,12 +128,14 @@ func (self *ShareFile) addRegular() {
 
 	switch dialog.Run() {
 	case gtk.RESPONSE_ACCEPT:
-		list = dialog.GetFilenames()
+		list = gtkmust.MustSList(dialog.GetFilenames())
 	default:
 		return
 	}
 
-	for i := uint(0); i < list.Length(); i++ {
-		fmt.Fprintln(os.Stdout, glib.GPtrToString(list.Nth(i).Data()))
+	for l := list; l != nil; l = l.Next() {
+		l.Native()
+		s := C.GoString(*((**C.char)(unsafe.Pointer(l.Native()))))
+		fmt.Println(s)
 	}
 }

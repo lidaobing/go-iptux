@@ -1,49 +1,56 @@
 package libiptux
 
-import "github.com/mattn/go-gtk/gtk"
+import (
+	"github.com/gotk3/gotk3/gtk"
+	"github.com/lidaobing/gtkmust"
+)
 
 type MainWindow struct {
-	gtk.Window
+	gtk.ApplicationWindow
 }
 
-func NewMainWindow() *MainWindow {
-	res := &MainWindow{*gtk.NewWindow(gtk.WINDOW_TOPLEVEL)}
+func NewMainWindow(app *gtk.Application) *MainWindow {
+	res := &MainWindow{*gtkmust.ApplicationWindowNew(app)}
 	res.SetTitle(T("iptux"))
 
-	box := gtk.NewVBox(false, 0)
+	box := gtkmust.BoxNew(gtk.ORIENTATION_VERTICAL, 0)
 	res.Add(box)
 
-	menubar := gtk.NewMenuBar()
+	menubar := gtkmust.MenuBarNew()
 	box.Add(menubar)
 	menubar.Append(res.NewToolsMenu())
 	menubar.Append(res.NewHelpMenu())
 
+	label := gtkmust.LabelNew("Hello World")
+	box.Add(label)
+
 	return res
 }
 
-func (window *MainWindow) NewToolsMenu() gtk.IWidget {
-	menu := gtk.NewMenuItemWithMnemonic(T("_Tools"))
+func (window *MainWindow) NewToolsMenu() gtk.IMenuItem {
+	menu := gtkmust.MenuItemNewWithMnemonic(T("_Tools"))
 
-	submenu := gtk.NewMenu()
+	submenu := gtkmust.MenuNew()
 	menu.SetSubmenu(submenu)
 
-	menuItem := gtk.NewImageMenuItemWithMnemonic(T("_Shared Management"))
-	image := gtk.NewImageFromStock(gtk.STOCK_ABOUT, gtk.ICON_SIZE_MENU)
-	menuItem.SetImage(&image.Widget)
+	menuItem := gtkmust.MenuItemNewWithMnemonic(T("_Shared Management"))
+
+	//image := gtk.NewImageFromStock(gtk.STOCK_ABOUT, gtk.ICON_SIZE_MENU)
+	//menuItem.SetImage(&image.Widget)
 	submenu.Append(menuItem)
 	menuItem.Connect("activate", window.onSharedManagement)
 	return menu
 }
-func (window *MainWindow) NewHelpMenu() gtk.IWidget {
-	menu := gtk.NewMenuItemWithMnemonic(T("_Help"))
+func (window *MainWindow) NewHelpMenu() gtk.IMenuItem {
+	menu := gtkmust.MenuItemNewWithMnemonic(T("_Help"))
 
-	submenu := gtk.NewMenu()
+	submenu := gtkmust.MenuNew()
 	menu.SetSubmenu(submenu)
 
-	menuItem := gtk.NewImageMenuItemWithMnemonic(T("_About"))
-	image := gtk.NewImageFromIconName(gtk.STOCK_ABOUT, gtk.ICON_SIZE_MENU)
+	menuItem := gtkmust.MenuItemNewWithMnemonic(T("_About"))
+	//image := gtk.NewImageFromIconName(gtk.STOCK_ABOUT, gtk.ICON_SIZE_MENU)
 	//image := gtk.NewImageFromIconName(gtk.STOCK_ABOUT)
-	menuItem.SetImage(&image.Widget)
+	//menuItem.SetImage(&image.Widget)
 	submenu.Append(menuItem)
 	menuItem.Connect("activate", window.onAbout)
 	return menu
@@ -56,7 +63,7 @@ func (self *MainWindow) onSharedManagement() {
 }
 
 func (self *MainWindow) onAbout() {
-	dialog := NewAboutDialog()
+	dialog := NewAboutDialog(self)
 	dialog.Run()
 	dialog.Destroy()
 }

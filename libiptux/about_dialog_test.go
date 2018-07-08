@@ -2,7 +2,7 @@ package libiptux_test
 
 import (
 	"testing"
-	"github.com/mattn/go-gtk/gtk"
+	"github.com/gotk3/gotk3/gtk"
 	"github.com/stretchr/testify/assert"
 	"github.com/lidaobing/go-iptux/libiptux"
 )
