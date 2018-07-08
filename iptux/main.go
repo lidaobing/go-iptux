@@ -1,12 +1,13 @@
 package main
 
 import (
-	"github.com/lidaobing/go-iptux/libiptux"
-	"gopkg.in/leonelquinteros/gotext.v1"
-	"github.com/lidaobing/gtkmust"
-	"github.com/gotk3/gotk3/glib"
 	"os"
+
+	"github.com/gotk3/gotk3/glib"
 	"github.com/gotk3/gotk3/gtk"
+	"github.com/lidaobing/go-iptux/libiptux"
+	"github.com/lidaobing/gtkmust"
+	"gopkg.in/leonelquinteros/gotext.v1"
 )
 
 func main() {
