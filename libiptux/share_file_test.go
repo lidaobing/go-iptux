@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/lidaobing/go-iptux/libiptux"
-	"github.com/mattn/go-gtk/gtk"
+	"github.com/gotk3/gotk3/gtk"
 )
 
 func TestNewShareFile(t *testing.T) {

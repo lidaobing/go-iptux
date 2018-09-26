@@ -8,24 +8,29 @@
   version = "v1.1.0"
 
 [[projects]]
-  branch = "for-go-iptux"
-  name = "github.com/mattn/go-gtk"
+  branch = "add_ScrolledWindow_ShadowType"
+  name = "github.com/gotk3/gotk3"
   packages = [
+    "cairo",
     "gdk",
-    "gdkpixbuf",
-    "gio",
     "glib",
     "gtk",
     "pango"
   ]
-  revision = "fc1ffd2ab4c53ea7d70d8deba97d7341dc68bf77"
-  source = "https://github.com/lidaobing/go-gtk.git"
+  revision = "812534837ca8bb8796183762a69435dc7eb50aac"
+  source = "https://github.com/lidaobing/gotk3-1.git"
+
+[[projects]]
+  name = "github.com/leonelquinteros/gotext"
+  packages = ["."]
+  revision = "92b69ffa4cc0895b83b42f50065e9de5a3c32960"
+  version = "v1.3.1"
 
 [[projects]]
   branch = "master"
-  name = "github.com/mattn/go-pointer"
+  name = "github.com/lidaobing/gtkmust"
   packages = ["."]
-  revision = "1d30dc4b6f28271a3bd126071d4d0363e618415b"
+  revision = "b805e2a8d56c17f99871642d7ed7fff85bcf70c5"
 
 [[projects]]
   branch = "master"
@@ -58,6 +63,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "20061a924b34547b33bf25e0dc4fbaeaa964843ff5b14ed8e006479ccc85be78"
+  inputs-digest = "2f1e8cd530ce8549d913861a9def8f8cc292ba9fe17c933570dda9e1a302ed76"
   solver-name = "gps-cdcl"
   solver-version = 1

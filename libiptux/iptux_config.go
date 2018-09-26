@@ -2,8 +2,8 @@ package libiptux
 
 import (
 	"encoding/json"
-	"os"
 	"io/ioutil"
+	"os"
 
 	"github.com/lidaobing/go-iptux/libiptux/errors"
 )

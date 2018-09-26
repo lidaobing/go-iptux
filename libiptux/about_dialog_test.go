@@ -2,12 +2,13 @@ package libiptux_test
 
 import (
 	"testing"
-	"github.com/mattn/go-gtk/gtk"
-	"github.com/stretchr/testify/assert"
+
+	"github.com/gotk3/gotk3/gtk"
 	"github.com/lidaobing/go-iptux/libiptux"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNewAboutDialog(t *testing.T) {
 	gtk.Init(nil)
-	assert.NotNil(t, libiptux.NewAboutDialog())
+	assert.NotNil(t, libiptux.NewAboutDialog(nil))
 }

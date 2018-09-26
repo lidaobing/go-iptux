@@ -1,7 +1,7 @@
 package libiptux
 
 import (
-	"gopkg.in/leonelquinteros/gotext.v1"
+	"github.com/leonelquinteros/gotext"
 )
 
 func T(str string, vars ...interface{}) string {
